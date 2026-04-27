@@ -19,15 +19,16 @@ Use this skill when the user provides a stored procedure or function and wants i
 
 ## Goal
 
-Translate database routines into clear, accurate explanations that describe purpose, inputs, outputs, control flow, and side effects.
+Translate database routines into clear, accurate explanations that describe purpose, inputs, outputs, control flow, side effects, and optional execution flow diagrams when useful.
 
 ## Step-by-Step Workflows
 
 1. Ask the user to specify Oracle or MySQL if it is not already clear.
 2. Read the routine signature, parameters, and return behavior.
 3. Trace the SQL statements, control flow, and dependencies.
-4. Summarize the routine in plain language.
-5. Call out risks, assumptions, and anything the user should verify.
+4. If the logic has branching, loops, phases, or non-trivial control flow, generate a Mermaid flow diagram that reflects the execution path.
+5. Summarize the routine in plain language.
+6. Call out risks, assumptions, and anything the user should verify.
 
 ## Platform Rules
 
@@ -51,6 +52,7 @@ For each routine, provide:
 - Purpose
 - Inputs and outputs
 - Step-by-step behavior
+- Mermaid flow diagram when the control flow is complex enough to benefit from one, or when the user asks for it
 - Important side effects or risks
 
 ## Reporting Style
@@ -58,16 +60,18 @@ For each routine, provide:
 - Be clear and technical, but readable.
 - Use the database platform the user selected.
 - Prefer structured explanations over long prose.
+- When including a diagram, use Mermaid flowchart syntax and keep node labels concise.
+- Ensure the diagram matches the described SQL flow and does not invent branches that are not present.
 
 ## Troubleshooting
 
 - If the platform is unclear, ask whether it is Oracle or MySQL.
 - If the routine depends on tables or packages not shown, note the missing context.
 - If the SQL is complex, break the explanation into phases.
+- If the routine is too large for a single clean diagram, provide a high-level phase diagram instead of an unreadable line-by-line chart.
 
 ## References
 
 - Oracle PL/SQL conventions
 - MySQL routine conventions
 - Related schema and table definitions
-
