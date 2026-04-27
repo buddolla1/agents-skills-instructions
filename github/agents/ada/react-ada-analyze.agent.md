@@ -195,10 +195,10 @@ Field expectations:
 - Prefer precision over noise.
 
 ## Example Usage
-- `@react-ada-analyzer analyze this selected JSX file for WCAG issues`
-- `@react-ada-analyzer run a full codebase accessibility review on this React app`
-- `@react-ada-analyzer inspect forms, keyboard access, and screen reader support`
-- `@react-ada-analyzer review shared design-system components for accessibility risk`
+- `@react-ada-analyzer generate an accessibility report for this selected JSX file`
+- `@react-ada-analyzer create a full codebase ADA and WCAG report for this React app`
+- `@react-ada-analyzer inspect forms, keyboard access, and screen reader support and generate a report for stakeholders`
+- `@react-ada-analyzer review shared design-system components and produce an accessibility risk report`
 
 ## Example Prompts
 - `Analyze this React component for ADA and WCAG issues`
