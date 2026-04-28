@@ -1,0 +1,71 @@
+{
+  "title": "ICS Project Overview",
+  "description": "Onboarding tour for the Indian Constitution Simplified Spring AI application",
+  "isPrimary": true,
+  "steps": [
+    {
+      "title": "Welcome",
+      "description": "# ICS overview\n\nThis tour explains the main Spring Boot entry points, runtime configuration, document ingestion flow, and the request path used to answer questions about the Indian Constitution."
+    },
+    {
+      "title": "Build and dependencies",
+      "description": "The project is a Spring Boot application using Spring AI, a PDF reader, and pgvector-backed retrieval. Review the declared dependencies and platform versions here.",
+      "file": "pom.xml",
+      "line": 1
+    },
+    {
+      "title": "Application entry point",
+      "description": "This is the bootstrapping class. Spring starts here and discovers the controller and component classes in the same package.",
+      "file": "src/main/java/com/dailycodebuffer/ics/IcsApplication.java",
+      "line": 1
+    },
+    {
+      "title": "Runtime configuration",
+      "description": "The application reads its datasource, OpenAI API key, model selection, and pgvector settings from this file. The `OPENAI_API_KEY` environment variable is required at runtime.",
+      "file": "src/main/resources/application.yaml",
+      "line": 1
+    },
+    {
+      "title": "HTTP entry point",
+      "description": "This controller exposes the `/` endpoint. It accepts a `question` parameter, builds a prompt, fetches similar documents from the vector store, and calls the chat model with the assembled context.",
+      "file": "src/main/java/com/dailycodebuffer/ics/ICSController.java",
+      "line": 17
+    },
+    {
+      "title": "Prompt template",
+      "description": "The inline prompt constrains the model to answer from retrieved documents and to say it does not know when evidence is missing. This is the core RAG instruction for the app.",
+      "file": "src/main/java/com/dailycodebuffer/ics/ICSController.java",
+      "line": 23
+    },
+    {
+      "title": "Similarity search",
+      "description": "This method performs a vector similarity lookup with `topK=5` and joins the retrieved document chunks into the prompt context sent to the model.",
+      "file": "src/main/java/com/dailycodebuffer/ics/ICSController.java",
+      "line": 59
+    },
+    {
+      "title": "Startup data ingestion",
+      "description": "This component loads the Constitution PDF into the vector store on startup when the backing table is empty. It prevents duplicate ingestion by checking the record count first.",
+      "file": "src/main/java/com/dailycodebuffer/ics/DataLoader.java",
+      "line": 13
+    },
+    {
+      "title": "PDF reader and chunking",
+      "description": "Here the app reads the PDF page by page, splits content into token-based chunks, and pushes embeddings into the configured vector store.",
+      "file": "src/main/java/com/dailycodebuffer/ics/DataLoader.java",
+      "line": 37
+    },
+    {
+      "title": "Vector schema",
+      "description": "This SQL file creates the `vector_store` table and an HNSW index for cosine similarity search. It defines the storage layer used by retrieval.",
+      "file": "src/main/resources/schema.sql",
+      "line": 1
+    },
+    {
+      "title": "Source document",
+      "description": "The retrieval pipeline is built from this PDF resource, which is loaded into the vector store during application startup.",
+      "file": "src/main/resources/India_Constitution.pdf",
+      "line": 1
+    }
+  ]
+}
