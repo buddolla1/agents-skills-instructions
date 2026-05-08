@@ -1,105 +1,65 @@
-# Ultimate Codebase Analysis Agent - Overview
+# Ultimate Codebase Analysis Agent Overview
 
-## Overview
+## What This Agent Does
+This agent coordinates independent codebase-analysis skills and consolidates their outputs into one actionable markdown report.
 
-This agent orchestrates large-codebase analysis by splitting work across specialized internal agents and consolidating the results into a single markdown report.
+## When To Use It
+- Use it for repository-wide or diff-wide technical assessments.
+- Use it when you need one combined report across runtime risk, dependencies, performance, testing posture, security signals, and compliance.
+- Use it when you want the analysis logic to stay reusable outside the agent.
 
-It is designed for:
-- full repository review
-- git diff review
-- Java and Spring backend analysis
-- dependency review
-- exception and runtime-risk review
-- instruction compliance verification
+## When Not To Use It
+- Do not use it for narrow single-file analysis.
+- Do not use it when a single focused skill is enough.
+- Do not use it as the place where analyzer-specific logic lives.
 
-## Supported Workflow
-
-1. Scan the repository and build a module/file map.
-2. Run analysis agents in parallel.
-3. Verify compliance against instruction-based rules.
-4. Generate one final markdown report.
-
-## Architecture Overview
-
-The architecture is optimized for large repositories by:
-- chunking by module
-- using a minimum of 6 agents and a maximum of 9 agents
-- limiting work per agent
-- using parallel execution for independent analysis
-- aggregating outputs into a single reporter stage
+## How It Works
+It resolves scope first, scans and chunks the repository, loads only the needed independent analysis skills, then merges the findings into one final report.
 
 ```mermaid
 flowchart TD
-    A[Start] --> B[Select scan mode]
-    B --> C{Scan mode}
-    C -->|full| D[Scan entire repository]
-    C -->|diff| E[Scan changed files only]
-    D --> F[Build file and module map]
-    E --> F
-    F --> G[Run analysis agents in parallel]
-    G --> H[Aggregate findings]
-    H --> I{Instruction file present?}
-    I -->|Yes| J[Instruction compliance verifier]
-    I -->|No| K[Reporter]
-    J --> K
-    K --> L[Write markdown report]
+    A[Resolve scope and scan mode] --> B[Build repo map and chunk plan]
+    B --> C[Load relevant analysis skills]
+    C --> D[Run independent analysis passes]
+    D --> E[Run compliance skill when applicable]
+    E --> F[Merge, deduplicate, and rank findings]
+    F --> G[Write final report]
 ```
 
-## Agents and Responsibilities
+## Skills It Coordinates
+- `ultimate-codebase-analysis-intake`
+- `ultimate-codebase-analysis-repo-scan`
+- `ultimate-codebase-analysis-static-risk`
+- `ultimate-codebase-analysis-exception-risk`
+- `ultimate-codebase-analysis-dependency-health`
+- `ultimate-codebase-analysis-performance-hotspots`
+- `ultimate-codebase-analysis-instruction-compliance`
+- `ultimate-codebase-analysis-report-assembler`
 
-- Scanner: discover repository structure and prepare analysis scope
-- Static Analyzer: detect defects, anti-patterns, and performance issues
-- Exception Analyzer: review exception handling quality and runtime failure modes
-- Dependency Analyzer: review build and dependency health
-- Performance Analyzer: review hot paths, allocation pressure, database access, caching behavior, and concurrency bottlenecks
-- Instruction Compliance Verifier: enforce rules from the instruction source
-- Reporter: generate the final executive report
+## Inputs It Expects
+- repository root
+- optional diff scope
+- optional instruction source
+- optional focus areas for runtime risk, dependencies, performance, testing, security, or compliance review
 
-## Agent Count Rule
+## Output It Produces
+- consolidated markdown report path
+- merged findings across the selected analysis skills
 
-- Minimum agents: 6
-- Maximum agents: 9
-- Keep the core scanner, analyzers, compliance verifier, and reporter in place
-- Add optional specialist agents only when the review scope justifies them
-- Select `full` or `diff` scan mode before scanning begins
-- Run static, exception, dependency, and performance analysis in parallel when relevant
+## Tools It Uses
+- `codebase`: reads repository contents
+- `file_operations`: writes the final report artifact
 
-## How To Use
+## How To Prompt It
+Give it the repository scope and say whether you want a full scan or diff scan. Mention the focus areas if you want a weighted review.
 
-- `@ultimate-codebase-analysis-agent`
-- `@ultimate-codebase-analysis-agent scanMode=full`
-- `@ultimate-codebase-analysis-agent scanMode=diff`
-- `@ultimate-codebase-analysis-agent static-analysis`
-- `@ultimate-codebase-analysis-agent exception-analysis`
-- `@ultimate-codebase-analysis-agent dependency-check`
-- `@ultimate-codebase-analysis-agent performance-analysis`
-- `@ultimate-codebase-analysis-agent summarize critical issues`
-- `@ultimate-codebase-analysis-agent scan module portal`
+## Example Prompts
+- `Run a full codebase review and produce one report.`
+- `Analyze this diff for runtime and dependency risk.`
+- `Review this repository for testing and compliance concerns.`
 
-## Output
-
-The final report is written as `codebase-analysis-report.md` and includes:
-- Summary
-- Critical Issues
-- High Issues
-- Medium Issues
-- Low Issues
-- Exception Highlights
-- Dependency Risks
-- Performance Highlights
-- Compliance Summary
-- Compliance Violations
-- Recommendations
-
-## Best Practice
-
-Use full scan for baseline audits, architecture reviews, compliance reviews, and release readiness checks. Use diff scan for pull requests, targeted validation, or fast feedback on recent edits. Keep compliance verification enabled for every run that has an instruction source.
-
-## Guardrails
-
-- Do not invent files or modules that are not present.
-- Do not treat assumptions as findings.
-- Do not merge unrelated issues into one category.
-- Do not emit vague recommendations without code evidence.
-- Do not skip compliance verification when the instruction set is available.
-- Do not degrade output quality for large repositories; chunk instead.
+## Limits And Guardrails
+- It should not embed analyzer-specific logic that belongs in a skill.
+- It should not invent findings or missing repository structure.
+- It should keep compliance separate from general code quality.
+- It should load only the skills justified by the request and repository evidence.

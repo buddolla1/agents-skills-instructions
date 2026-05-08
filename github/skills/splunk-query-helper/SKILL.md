@@ -49,6 +49,58 @@ Produce correct, readable, and efficient SPL that matches the user’s intent an
 - Use `rex` only when fields are not already extracted.
 - Use `table` or `fields` near the end to control output shape.
 
+## Intent-to-Query Recipes
+
+Map common user requests to a likely SPL shape before writing the final query.
+
+- "Show error trend": base search + `timechart count`
+- "Find top failing endpoints": base search + error filter + `stats count by endpoint`
+- "Trace one request across services": base search on request identifier + `stats values(...) by request_id`
+- "Find slowest APIs": numeric conversion + threshold or percentile + `stats` or `sort`
+- "Compare before and after a deployment": bounded time filters + grouped counts or latency metrics
+- "Find login failure spikes": auth filter + `timechart` or `stats count by user, src_ip`
+- "Find missing fields or bad events": `eval` null checks + `stats count by missing_state`
+
+When the user request is vague, choose the smallest recipe that answers it and state assumptions.
+
+## Field Extraction Strategy
+
+Choose extraction based on the actual log structure instead of defaulting to regex.
+
+- Prefer existing indexed or extracted fields first.
+- Use `spath` for JSON logs or nested JSON payloads.
+- Use existing key-value extraction if logs are already in `key=value` form.
+- Use `rex` when the field is not otherwise available and the pattern is stable.
+- Use `eval` to normalize names, coerce numbers, or derive boolean flags after extraction.
+
+### Extraction Workflow
+
+1. Inspect one or two raw events.
+2. Identify whether the log is JSON, key-value, or free text.
+3. Check whether fields already exist before adding extraction logic.
+4. Use `spath` for JSON, field references for existing extractions, and `rex` only for missing fields.
+5. Validate extraction with `table` or `stats count by <field>` before adding aggregation.
+
+### JSON Example
+
+```spl
+index=app_logs sourcetype=json_logs
+| spath path=request.id output=request_id
+| spath path=service.name output=service
+| spath path=duration_ms output=duration_ms
+| eval duration_ms=tonumber(duration_ms)
+| table _time service request_id duration_ms
+```
+
+### Key-Value Example
+
+```spl
+index=app_logs sourcetype=kv_logs service=* requestId=* duration_ms=*
+| eval request_id=requestId
+| eval duration_ms=tonumber(duration_ms)
+| table _time service request_id duration_ms status
+```
+
 ## Performance Guidance
 
 - Restrict index and time range as early as possible.
@@ -191,6 +243,16 @@ index=app_logs sourcetype=service_logs
 
 Use `anomalydetection` or compare against a baseline only when the dataset and operational need justify the extra complexity.
 
+## Anti-Patterns
+
+- Do not start with `index=*` unless there is no narrower option.
+- Do not use `transaction` for large datasets when `stats` or `streamstats` can answer the question.
+- Do not use `join` when the same answer can come from one search, a lookup, or aggregation.
+- Do not run `rex` against `_raw` before checking whether the field already exists.
+- Do not use `table` too early if later pipeline steps still need dropped fields.
+- Do not compare numeric values as strings; coerce them with `tonumber(...)` first.
+- Do not widen the search to "make it return something" without stating that assumption.
+
 ## Guardrails
 
 - Do not invent field names, indexes, or source types; mark assumptions clearly.
@@ -208,12 +270,28 @@ For each answer, provide:
 - Short explanation of major pipeline stages
 - Any validation or performance notes
 
+## Validation Checklist
+
+Before finalizing SPL, verify:
+
+- the base search is scoped to a plausible index and time range
+- referenced fields exist or are explicitly extracted
+- numeric comparisons use numeric values
+- aggregations match the event granularity
+- the pipeline does not drop required fields too early
+- the result shape matches the user’s request
+- any expensive commands are justified
+
+If live validation is not possible, say what should be checked in Splunk after running the query.
+
 ## Troubleshooting
 
 - If there are no results, verify time range, index, and base filters first.
 - If there are too many results, tighten the base search before adding transforms.
 - If fields are missing, inspect raw events and confirm extraction timing.
 - If counts look wrong, check whether multi-value fields, duplicates, or event granularity affect the result.
+- If numeric thresholds behave strangely, confirm the field was converted from string to number.
+- If time-based results look off, check timezone assumptions and bucket span.
 - If the query is slow, remove later pipeline steps until the expensive stage is obvious.
 
 ## Reporting Style

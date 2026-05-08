@@ -1,68 +1,66 @@
 ---
 name: engineering-design-validation
-description: Produces BDD coverage, Gherkin scenarios, estimate points, test strategy, and test data for engineering design plans. Use when the delivery structure is known and quality validation needs to be documented.
+description: Verifies that the generated engineering design artifact matches the requested mode, stays repo-aware, and returns the required JSON contract. Use when the markdown draft is complete and must be checked before final delivery.
 ---
 
 # Engineering Design Validation
 
-Use this skill to add quality, test, and estimate detail to the delivery plan.
+Use this skill to validate the markdown artifact and assemble the final JSON result.
 
 ## When to Use This Skill
 
-Use this skill after planning is complete and the stories are ready for validation and test framing.
+Use this skill after the markdown artifact has been drafted.
 
 ## Prerequisites
 
-- Epics
-- Story breakdown
-- Dependencies
-- Confirmed sizing inputs
+- Draft markdown artifact
+- Requested `outputMode`
+- Repo context summary
+- Assumptions list
+- Intended `outputPath`
 
 ## Goal
 
-Provide the validation layer of the delivery plan with BDD, Gherkin, estimates, and test guidance.
+Verify the artifact and produce the required single JSON object.
 
 ## Step-by-Step Workflows
 
-1. Translate the stories into BDD coverage.
-2. Write concise Gherkin scenarios for the most important flows.
-3. Assign estimate points where requested.
-4. Define a test strategy that matches the delivery risk.
-5. List representative test data.
-6. Include acceptance criteria and test data notes for each story when useful.
+1. Check that the draft is a markdown artifact and that `outputPath` is explicit.
+2. Verify the sections match the selected `outputMode`.
+3. Verify repo-aware statements are grounded in visible repository context.
+4. Verify assumptions are explicit.
+5. Build the final JSON object with `summary`, `artifactType`, `sectionsGenerated`, `outputPath`, and `assumptions`.
 
 ## Output Standard
 
-For validation, provide:
+Return a single JSON object with:
 
-- BDD
-- Gherkin scenarios
-- Acceptance criteria
-- Estimate points
-- Test strategy
-- Test data
+- `summary`
+- `artifactType`
+- `sectionsGenerated`
+- `outputPath`
+- `assumptions`
 
 ## Quality Check
 
 Before handing off, verify that:
 
-- BDD and Gherkin cover the primary flows and edge cases
-- every story has a point estimate when estimates are requested
-- test data notes align with the story behavior
-- the validation layer supports the delivery plan clearly
+- the final response is only the JSON object
+- `artifactType` matches the requested mode
+- `sectionsGenerated` reflects the markdown content
+- `outputPath` points to a markdown file
 
 ## Guardrails
 
-- Do not repeat the planning section.
-- Do not create test cases that do not map to the stories.
-- Do not overcomplicate the estimates.
+- Do not emit extra prose before or after the JSON object.
+- Do not claim repo alignment without evidence.
+- Do not leave `outputPath` implicit.
 
 ## Reporting Style
 
-- Be practical and review-friendly.
-- Keep test guidance tied to actual delivery risk.
+- Be exact and compact.
+- Treat the JSON contract as mandatory.
 
 ## References
 
-- The source `feature.txt`
 - The planning skill

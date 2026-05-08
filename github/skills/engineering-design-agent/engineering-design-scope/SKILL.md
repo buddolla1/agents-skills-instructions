@@ -1,54 +1,54 @@
 ---
 name: engineering-design-scope
-description: Captures the feature summary, assumptions, and scope boundaries for engineering design plans. Use when the intake inputs are confirmed and the delivery document needs business framing.
+description: Reads repository context and captures assumptions and scope boundaries for repo-aware engineering design output. Use when the requirement is clear enough to align the artifact with the repository.
 ---
 
 # Engineering Design Scope
 
-Use this skill to define what the feature is, what it includes, and what it explicitly excludes.
+Use this skill to ground the design artifact in the repository before writing technical recommendations.
 
 ## When to Use This Skill
 
-Use this skill after intake has confirmed the sizing inputs and the feature intent is clear enough to frame the scope.
+Use this skill after intake has confirmed the requirement and before drafting repo-aware content.
 
 ## Prerequisites
 
-- Confirmed sizing inputs
-- Feature requirements or feature.txt content
-- Any business context, constraints, or known exclusions
+- Confirmed requirement
+- README, build files, and relevant source or config files
+- Any known constraints from the user
 
 ## Goal
 
-Capture the feature summary, assumptions, scope, and boundaries in a concise and reviewable form.
+Capture visible repo context, assumptions, and boundaries so later sections stay grounded.
 
 ## Step-by-Step Workflows
 
-1. Summarize the feature in plain business language.
-2. Capture assumptions explicitly instead of implying them.
-3. Define in-scope and out-of-scope boundaries.
-4. State the delivery intent at a high level.
+1. Read the README and build files first.
+2. Inspect relevant source or config files tied to the requirement.
+3. Infer the stack and architecture only from visible evidence.
+4. Record assumptions and any scope limits caused by missing context.
 
 ## Output Standard
 
-For scope, provide:
+For repo context, provide:
 
 - Feature summary
-- Executive summary
+- Repo context summary
 - Assumptions
 - Scope
-- Out of scope items
+- Context limits
 
 ## Guardrails
 
-- Do not introduce epics or story details here.
-- Do not invent architectural decisions.
+- Do not invent stack details that were not observed.
+- Do not make architecture claims without evidence in repo files.
 
 ## Reporting Style
 
-- Keep the framing concise and factual.
-- Separate confirmed facts from assumptions.
+- Keep confirmed facts separate from assumptions.
+- Keep the evidence trail easy to follow.
 
 ## References
 
-- The source `feature.txt`
+- README, build files, and relevant source or config files
 - The intake skill

@@ -15,9 +15,11 @@ It is intended for requests such as:
 The skill guides the agent to:
 
 - identify the right base search using `index`, `sourcetype`, `source`, `host`, or known fields
+- map the question to a likely SPL shape before writing the final query
 - narrow the search before adding expensive transformations
-- choose suitable SPL commands such as `search`, `where`, `eval`, `rex`, `stats`, and `timechart`
+- choose suitable SPL commands such as `search`, `where`, `eval`, `rex`, `spath`, `stats`, and `timechart`
 - avoid common performance mistakes
+- validate field existence, numeric coercion, and result shape
 - return readable SPL with assumptions and notes
 
 ## How to Use It
@@ -49,6 +51,22 @@ Use splunk-query-helper to optimize this SPL query and explain why it is slow.
 Use splunk-query-helper to extract fields from this sample log and build a query for slow requests.
 ```
 
+```text
+Use splunk-query-helper to trace a request ID across services and show the event sequence.
+```
+
+## Common Request Types
+
+This skill is most useful for requests such as:
+
+- show an error trend over time
+- find the top failing endpoints
+- trace one request across multiple services
+- find slow APIs or p95 latency
+- compare behavior before and after a deployment
+- detect login failures or traffic spikes
+- find events with missing or malformed fields
+
 ## Best Input Format
 
 Provide as much of this as you know:
@@ -61,6 +79,7 @@ Provide as much of this as you know:
 - field names already known
 - time range
 - expected output shape
+- whether logs are JSON, key-value, or plain text
 
 Example:
 
@@ -74,6 +93,16 @@ Time range: last 24 hours
 Known fields: service, endpoint, duration_ms, request_id
 Need: final SPL plus short explanation
 ```
+
+## Choosing an Extraction Method
+
+The skill does not assume regex first. It chooses extraction based on the log structure.
+
+- Use existing fields if Splunk already extracts them.
+- Use `spath` for JSON logs.
+- Use existing key-value fields for `field=value` logs.
+- Use `rex` only when the needed field is not already available.
+- Use `eval` to normalize field names or convert strings to numbers.
 
 ## Example Log Input
 
@@ -114,6 +143,17 @@ index=app_logs sourcetype=service_logs
 | table _time service request_id user_id duration_ms status path
 ```
 
+JSON-oriented example:
+
+```spl
+index=app_logs sourcetype=json_logs
+| spath path=request.id output=request_id
+| spath path=service.name output=service
+| spath path=duration_ms output=duration_ms
+| eval duration_ms=tonumber(duration_ms)
+| table _time service request_id duration_ms
+```
+
 ## What You Can Expect Back
 
 Typical outputs include:
@@ -122,6 +162,13 @@ Typical outputs include:
 - assumptions the query depends on
 - a short explanation of each pipeline stage
 - performance or validation notes
+
+The skill should also sanity-check:
+
+- whether the base search is scoped correctly
+- whether referenced fields exist
+- whether numeric comparisons use numeric values
+- whether the result shape matches the request
 
 ### Response Flow
 
@@ -133,6 +180,15 @@ flowchart LR
     D --> E[Aggregate or format results]
     E --> F[Explain query and tradeoffs]
 ```
+
+## Common Anti-Patterns It Helps Avoid
+
+- broad `index=*` searches
+- using `transaction` when `stats` would work
+- unnecessary `join` usage
+- applying `rex` before checking existing fields
+- using `table` too early and dropping needed fields
+- comparing numeric values as strings
 
 ## Limits
 

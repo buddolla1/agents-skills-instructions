@@ -1,68 +1,67 @@
 ---
 name: engineering-design-planning
-description: Builds epics, story breakdowns, dependencies, and dependency matrices for enterprise feature plans. Use when scope is clear and the delivery structure needs to be organized.
+description: Structures the markdown design artifact for BDD, architecture, full design, or template output. Use when the requirement and repo context are clear enough to draft the requested engineering design content.
 ---
 
 # Engineering Design Planning
 
-Use this skill to turn the scoped feature into a structured implementation plan.
+Use this skill to draft the main markdown artifact in the correct format for the requested output mode.
 
 ## When to Use This Skill
 
-Use this skill after scope has been defined and the epics/stories can be organized.
+Use this skill after intake and repo-context work are complete.
 
 ## Prerequisites
 
 - Feature summary
 - Assumptions
-- Scope boundaries
-- Confirmed sizing inputs
+- Repo context summary
+- Requested `outputMode`
 
 ## Goal
 
-Create the delivery structure with epics, stories, and dependency mapping.
+Create a markdown artifact whose sections match the requested design outcome.
 
 ## Step-by-Step Workflows
 
-1. Break the feature into logical epics.
-2. Expand each epic into user stories with title, description, dependencies, story points, and tasks.
-3. Identify upstream and downstream dependencies.
-4. Produce a dependency matrix that makes sequencing obvious.
-5. Keep the story point scale consistent across the plan.
+1. Choose the artifact structure based on `outputMode`.
+2. For `bdd`, focus on stories, scenarios, acceptance criteria, and test data.
+3. For `architecture`, focus on architecture overview, HLD, LLD, data flow, risks, and diagrams.
+4. For `full_design`, combine scope, behavior, validation, and architecture sections.
+5. For `template`, provide a reusable markdown skeleton with placeholders grounded in the repo context.
 
 ## Output Standard
 
-For planning, provide:
+For the markdown artifact, provide the sections that fit the selected mode, such as:
 
-- Epics
-- Story breakdown
-- Dependencies
-- Dependency matrix
-- Story list
+- Summary
+- Assumptions
+- Architecture overview
+- High-level design
+- Low-level design
+- BDD scenarios
+- Test data
+- Risks
 
 ## Quality Check
 
 Before handing off, verify that:
 
-- every epic has stories
-- every story has a point estimate
-- every story has tasks
-- dependencies are listed where relevant
-- the story list is complete and traceable
+- the section set matches the selected `outputMode`
+- each section is grounded in repo context or explicit assumptions
+- the markdown output is cohesive and reviewable
 
 ## Guardrails
 
-- Do not add BDD or testing content here.
-- Do not skip dependency mapping.
-- Do not over-split stories without a clear delivery reason.
+- Do not force sections that do not fit the selected mode.
+- Do not hide assumptions inside descriptive prose.
+- Do not output JSON in this stage.
 
 ## Reporting Style
 
 - Be structured and specific.
-- Keep the planning sequence easy to review.
-- Prefer tables for epics, stories, dependencies, and estimates when they improve clarity.
+- Prefer headings, tables, and bullets only when they improve scanability.
 
 ## References
 
-- The source `feature.txt`
 - The scope skill

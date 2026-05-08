@@ -1,35 +1,34 @@
 ---
 name: engineering-design-architecture
-description: Finalizes architecture overview, HLD, LLD, Mermaid diagrams, risks, and next steps for enterprise delivery plans. Use when the feature has been scoped, planned, and validated and the technical design needs to be completed.
+description: Produces architecture-focused sections such as overview, HLD, LLD, and Mermaid diagrams for engineering design artifacts. Use when the requested output includes architecture design or technical structure.
 ---
 
 # Engineering Design Architecture
 
-Use this skill to complete the architecture and close out the delivery document.
+Use this skill to draft architecture-specific sections when the output requires technical design detail.
 
 ## When to Use This Skill
 
-Use this skill after scope, planning, and validation are complete.
+Use this skill when `outputMode` is `architecture` or `full_design`, or when the requirement clearly asks for technical design.
 
 ## Prerequisites
 
 - Feature summary
 - Assumptions
-- Epics
-- Stories
-- Validation detail
+- Repo context summary
+- Optional `architectureType`
 
 ## Goal
 
-Create the technical architecture sections that round out the final delivery plan.
+Create architecture sections that are specific enough to guide implementation without inventing unsupported details.
 
 ## Step-by-Step Workflows
 
 1. Summarize the architecture at a high level.
 2. Write the HLD in terms of components and flows.
 3. Write the LLD with implementation-level detail appropriate for the plan.
-4. Add Mermaid diagrams where they improve clarity.
-5. Capture risks and next steps.
+4. Add Mermaid diagrams when they improve clarity.
+5. Capture risks, constraints, and key assumptions.
 
 ## Output Standard
 
@@ -40,20 +39,20 @@ For architecture, provide:
 - LLD
 - Diagrams
 - Risks
-- Next steps
+- Assumptions
 
 ## Guardrails
 
-- Do not rewrite the planning or validation sections.
-- Do not invent design details not supported by the feature input.
-- Do not skip diagrams when they materially improve understanding.
+- Do not invent components or integrations not supported by repo context or user input.
+- Do not skip diagrams when architecture output was explicitly requested.
+- Do not restate unrelated non-architecture sections.
 
 ## Reporting Style
 
 - Be precise and concise.
-- Keep the technical design aligned with the rest of the document.
+- Keep the technical design aligned with visible repo conventions.
 
 ## References
 
-- The source `feature.txt`
+- README, build files, and relevant source or config files
 - The scope, planning, and validation skills

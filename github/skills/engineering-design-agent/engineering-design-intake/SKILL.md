@@ -1,54 +1,54 @@
 ---
 name: engineering-design-intake
-description: Reads feature.txt for engineering design work and collects missing sizing inputs before planning begins. Use when the feature request needs confirmation of epic count, stories per epic, and tasks per story.
+description: Confirms the requirement and collects only the minimum missing inputs before engineering design output is drafted. Use when the request needs clarification on scope, output mode, or architecture intent.
 ---
 
 # Engineering Design Intake
 
-Use this skill to confirm the starting inputs before the full delivery plan is generated.
+Use this skill to confirm the request before any markdown artifact is drafted.
 
 ## When to Use This Skill
 
-Use this skill when the user provides feature requirements and you need to verify whether the sizing inputs are complete.
+Use this skill when the user provides a feature or design requirement and the requested output is incomplete or ambiguous.
 
 ## Prerequisites
 
-- Raw `feature.txt` content
-- Requested number of epics
-- Requested number of user stories per epic
-- Requested number of tasks per story
+- `requirement`
+- Optional `outputMode`
+- Optional `projectType`
+- Optional `techStack`
+- Optional `architectureType`
 
 ## Goal
 
-Confirm the feature scope and collect the minimum sizing data needed to proceed.
+Confirm the requirement and ask the minimum clarifying question needed to proceed.
 
 ## Step-by-Step Workflows
 
-1. Read the feature input and identify missing sizing values.
-2. If epic count, stories per epic, or tasks per story are missing, ask the user for all three together.
-3. If the inputs are complete, confirm them and hand off to the scope skill.
-4. Keep this stage short and focused on intake only.
+1. Read the requirement and requested artifact type.
+2. Determine whether `outputMode` is explicit or implied.
+3. If the requirement is too broad, ask one targeted clarifying question.
+4. If the inputs are sufficient, hand off to the repo-context skill.
 
 ## Output Standard
 
 For intake, provide:
 
-- Confirmed feature summary
-- Missing sizing values, if any
-- Clarifying questions, if needed
+- Confirmed requirement summary
+- Missing context, if any
+- Clarifying question, if needed
 - Handoff note for the next skill
 
 ## Guardrails
 
-- Do not draft epics, stories, or architecture in this stage.
-- Do not continue until the sizing inputs are confirmed.
+- Do not draft the final artifact in this stage.
+- Do not ask more questions than needed.
 
 ## Reporting Style
 
 - Be concise and direct.
-- Ask only for the missing data needed to continue.
+- Ask only for missing information that changes the artifact materially.
 
 ## References
 
-- The source `feature.txt`
 - The coordinator skill

@@ -30,11 +30,13 @@ Analyze large codebases by splitting review into scoped analysis stages and cons
 - `scanMode`: `full_scan` or `diff_scan`
 - `changedFiles`: changed files when using diff-oriented review
 - `instructionSource`: instruction or policy files such as `instructions.md`
-- `focusAreas`: `architecture`, `runtime_risk`, `dependencies`, `performance`, `compliance`
+- `focusAreas`: `architecture`, `runtime_risk`, `dependencies`, `performance`, `testing`, `security_signals`, `compliance`
 
 ## Expected Repo Inputs
 - Source files across the selected repository or diff scope.
 - Build files such as `pom.xml`, `build.gradle`, or similar dependency definitions.
+- Test suites, fixtures, and CI definitions when testing posture is in scope.
+- Security-relevant configuration such as auth middleware, secret handling, CI workflows, or deployment manifests when security review is requested.
 - Instruction or policy files when compliance review is requested.
 - Module or package structure that can be used to chunk large repositories.
 
@@ -65,10 +67,12 @@ Return a single JSON object with this shape:
     }
   ],
   "findings": {
-    "staticIssues": ["One likely null-safety defect in service flow."],
-    "exceptionIssues": ["A swallowed exception hides downstream failure."],
+    "architectureIssues": ["A shared utility module has absorbed unrelated responsibilities and increases coupling."],
+    "runtimeRiskIssues": ["One likely null-safety defect can terminate the service flow on an error path."],
     "dependencyIssues": ["One outdated dependency introduces maintenance risk."],
-    "performanceIssues": ["Repeated blocking I/O is visible in request path."]
+    "performanceIssues": ["Repeated blocking I/O is visible in a request path."],
+    "testingIssues": ["A critical code path changed without nearby regression coverage."],
+    "securitySignalIssues": ["A token-handling path appears to log sensitive values and should be reviewed."]
   },
   "compliance": {
     "score": 88,
@@ -85,28 +89,36 @@ Return a single JSON object with this shape:
 ## Workflow
 1. Scan the repository and build the analysis scope.
 2. Chunk large repositories by module or package boundary when needed.
-3. Analyze static defects, exception handling, dependencies, and performance in parallel when relevant.
-4. Run compliance verification after the core analysis if instruction sources are present.
-5. Merge, deduplicate, normalize severity, and write one final markdown report.
+3. Analyze architecture, runtime risk, dependencies, performance, testing posture, and security signals in parallel when relevant.
+4. Verify that dependency, testing, and security guidance matches tooling and configuration actually present in the repository.
+5. Run compliance verification after the core analysis if instruction sources are present.
+6. Merge, deduplicate, normalize severity, and write one final markdown report.
 
 ## Verification Steps
 - Confirm the selected scan mode matches the user request.
 - Verify findings are grouped by evidence-based category.
 - Check that duplicate findings are merged before the final output.
 - Ensure compliance results remain separate from general code-quality findings.
+- Qualify any runtime-only, performance-only, or exploitability conclusion as likely or inferred unless it is directly supported by code evidence.
+- Verify testing, security, or dependency recommendations are grounded in files or configuration that actually exist in the repository.
 
 ## Required Checks Before Returning
 - Verify the response is a single JSON object matching the documented output contract.
 - Verify all high-severity findings include clear evidence or scoped explanation.
 - Verify the final report path is explicit when a markdown artifact is produced.
 - Verify compliance scoring is omitted or qualified when no instruction source is available.
+- Verify security findings are framed as signals unless the evidence is direct and unambiguous.
+- Verify testing and performance findings do not overstate what static review can prove.
 
 ## Escalation And Ambiguity Handling
 - If the requested scope is unclear, ask whether to run a full scan or diff scan.
 - If the repository is too large, continue with chunked review and state the limitation.
 - If a branch lacks enough context for a confident conclusion, lower confidence and record the missing inputs.
 - If the instruction source is missing, do not fabricate compliance scoring.
+- If testing posture cannot be assessed from available files, say so and avoid invented coverage claims.
+- If a security concern depends on runtime configuration, deployment state, or secret values that are not present, mark it as a signal and explain the missing evidence.
 
 ## Example Prompts
 - `Run a full codebase analysis and produce a consolidated report`
 - `Review this repository diff for runtime, dependency, and performance issues`
+- `Analyze this repository for architecture, testing gaps, and security signals`
