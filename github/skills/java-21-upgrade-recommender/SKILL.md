@@ -62,7 +62,7 @@ Produce a code-backed Java 21 upgrade assessment that:
 
 ## Version-Specific Guidance
 
-### If the Code Appears to Be Java 5 or Earlier
+### If the Code Appears to Be Java 5 or Earlier 
 
 - Prioritize generics cleanup, enhanced for-loops, enums, annotations, and safer collections usage.
 - Flag raw types, iterator-heavy loops, older concurrency patterns, and manual boilerplate common to early Java.
