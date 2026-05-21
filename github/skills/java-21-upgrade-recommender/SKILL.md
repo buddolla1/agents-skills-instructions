@@ -33,6 +33,12 @@ Use this skill when:
 - Optional `targetJavaVersion`, default `21`
 - Optional `reportDirectory`
 
+## Intake Rule
+
+- If the user provides one or more files, analyze those files first and limit the assessment to that explicit scope unless the user asks for a broader review.
+- If the user does not provide files or a clear module or repository scope, ask them to provide the relevant Java source files and build files before proceeding.
+- If only a Java source file is provided and no build file is available, continue with source-level findings but clearly lower confidence for baseline and compatibility conclusions.
+
 ## Goal
 
 Produce a code-backed Java 21 upgrade assessment that:
@@ -45,12 +51,14 @@ Produce a code-backed Java 21 upgrade assessment that:
 
 ## Step-by-Step Workflows
 
-1. Read Java source and build configuration in the requested scope.
-2. Infer the current baseline from visible evidence instead of guessing.
-3. Classify findings into blockers, required migration changes, optional modernization, and preview-only items where relevant.
-4. Build a staged migration path based on baseline age and risk.
-5. Write the markdown report to `docs/java-21-upgrade-report-<scope>.md`.
-6. Return the final JSON object with output path, findings, recommendations, migration plan, and report summary.
+1. Confirm the analysis scope from the user-provided files, module, package, or repository.
+2. If no files or scope are provided, ask the user to provide the files to review before continuing.
+3. Read Java source and build configuration in the requested scope.
+4. Infer the current baseline from visible evidence instead of guessing.
+5. Classify findings into blockers, required migration changes, optional modernization, and preview-only items where relevant.
+6. Build a staged migration path based on baseline age and risk.
+7. Write the markdown report to `docs/java-21-upgrade-report-<scope>.md`.
+8. Return the final JSON object with output path, findings, recommendations, migration plan, and report summary.
 
 ## Version-Specific Guidance
 
@@ -228,6 +236,7 @@ Before finalizing, verify that:
 ## Guardrails
 
 - Do not modify source files as part of this skill.
+- Do not proceed with a repository-wide assessment when the user has not provided files or a clear scope.
 - Do not infer compatibility from language syntax alone when build files disagree.
 - Do not recommend Java 21 features purely for novelty.
 - Do not mix preview-only suggestions with baseline migration requirements.
