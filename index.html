@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Images Gallery</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f4f6f8;
+        --surface: #ffffff;
+        --text: #16202a;
+        --muted: #5d6b78;
+        --border: #d7dde3;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      .wrap {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 32px 20px 40px;
+      }
+
+      header {
+        margin-bottom: 20px;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: 28px;
+        line-height: 1.2;
+      }
+
+      p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+      }
+
+      figure {
+        margin: 0;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(22, 32, 42, 0.08);
+      }
+
+      img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      figcaption {
+        padding: 14px 16px 16px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <header>
+        <h1>AI Image Gallery</h1>
+        <p>Two local images placed into a simple responsive HTML page.</p>
+      </header>
+
+      <section class="grid" aria-label="Image gallery">
+        <figure>
+          <img src="assets/analytics-robot.png" alt="Futuristic humanoid robot with analytics dashboard overlays" />
+          <figcaption>Analytics-themed robot illustration.</figcaption>
+        </figure>
+
+        <figure>
+          <img src="assets/ai-network.png" alt="AI technology graphic with a central AI symbol and surrounding network elements" />
+          <figcaption>AI network and interface composition.</figcaption>
+        </figure>
+      </section>
+    </main>
+  </body>
+  </html>
