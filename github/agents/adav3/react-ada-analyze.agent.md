@@ -1,6 +1,6 @@
 ---
 name: React ADA Accessibility Analyzer
-id: react-ada-analyzer
+id: react-ada-analyzer-adav3
 description: 'Performs structured ADA and WCAG analysis on React code and user flows, separates code-proven findings from manual checks, and produces an executive-ready accessibility report.'
 tools: [codebase]
 model: gpt-5.4

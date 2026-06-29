@@ -1,7 +1,7 @@
 # Engineering Design Agent Overview
 
 ## What This Agent Does
-This agent generates repo-aware engineering design artifacts such as BDD stories, HLD, LLD, test data, and Mermaid diagrams.
+This agent generates repo-aware engineering design artifacts such as BDD stories, HLD, LLD, test data, and Mermaid diagrams from a feature brief, including `feature.txt` input.
 It accepts an optional `storyCount` for BDD generation, asks for the number of stories when that detail is missing, and uses 5 subtasks per story by default.
 
 ## When To Use It

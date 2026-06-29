@@ -21,6 +21,16 @@ Use this skill after intake has confirmed the requirement and before drafting re
 
 Capture visible repo context, assumptions, and boundaries so later sections stay grounded.
 
+## Template Ownership
+
+This skill feeds the repo-aware content for:
+
+- `Architecture Overview`
+- `High-Level Design (HLD)`
+- `Low-Level Design (LLD)`
+- `Architecture Diagrams`
+- `Assumptions`
+
 ## Step-by-Step Workflows
 
 1. Read the README and build files first.
@@ -37,6 +47,7 @@ For repo context, provide:
 - Assumptions
 - Scope
 - Context limits
+- Evidence trail for architecture and BDD claims
 
 ## Guardrails
 

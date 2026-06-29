@@ -1,7 +1,7 @@
 # Engineering Design Agent Skill Overview
 
 ## What This Skill Does
-This skill coordinates repo-aware engineering design output. It turns a requirement into a markdown artifact such as BDD guidance, architecture design, or a full design document, then returns a final JSON summary.
+This skill coordinates repo-aware engineering design output. It turns a requirement into a markdown artifact such as BDD guidance, architecture design, or a full design document.
 
 ## When To Use It
 - Use it when feature requirements need to become structured engineering documentation.
@@ -20,7 +20,7 @@ This skill coordinates repo-aware engineering design output. It turns a requirem
 - optional `outputMode`: `bdd`, `architecture`, `full_design`, `template`
 
 ## How It Works
-The coordinator progressively loads smaller skills to confirm the request, inspect repo context, draft the artifact, and validate the final JSON contract.
+The coordinator progressively loads smaller skills to confirm the request, inspect repo context, draft the artifact, and validate the final markdown contract.
 
 ```mermaid
 flowchart TD
@@ -31,10 +31,10 @@ flowchart TD
     D --> E[Draft markdown artifact for selected outputMode]
     E --> F{Architecture requested?}
     F -- Yes --> G[Add HLD, LLD, and Mermaid diagrams]
-    F -- No --> H[Skip architecture-only sections]
+    F -- No --> H[Add diagrams where they help clarity]
     G --> I[Validate repo-aware claims and assumptions]
     H --> I
-    I --> J[Return single JSON summary]
+    I --> J[Return markdown artifact path and section list]
 ```
 
 ## Progressive Loading
@@ -49,28 +49,17 @@ flowchart TD
 - `artifactType`
 - `sectionsGenerated`
 - explicit assumptions
-- final JSON summary
+- markdown artifact path
+- section list
+- assumptions
 
 ## Output Contract
 
-```json
-{
-  "summary": "Generated a repo-aware design artifact.",
-  "artifactType": "full_design",
-  "sectionsGenerated": [
-    "Architecture Overview",
-    "High-Level Design",
-    "BDD Scenarios"
-  ],
-  "outputPath": "docs/generated/example-design.md",
-  "assumptions": [
-    "Architecture guidance was limited to visible repository context."
-  ]
-}
+```markdown
+docs/generated/example-design.md
 ```
 
 ## Guardrails
 - Do not invent repository context.
 - Do not hide assumptions in prose.
-- Do not return extra text outside the JSON object when using the skill contract.
-
+- Do not return extra text outside the markdown artifact contract.

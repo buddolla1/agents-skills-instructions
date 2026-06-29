@@ -22,13 +22,25 @@ Use this skill when `outputMode` is `architecture` or `full_design`, or when the
 
 Create architecture sections that are specific enough to guide implementation without inventing unsupported details.
 
+## Template Ownership
+
+This skill owns the architecture portions of the report template:
+
+- Architecture Overview
+- High-Level Design (HLD)
+- Low-Level Design (LLD)
+- Architecture Diagrams
+- Architecture-focused Risks
+- Architecture-focused Assumptions
+
 ## Step-by-Step Workflows
 
 1. Summarize the architecture at a high level.
 2. Write the HLD in terms of components and flows.
-3. Write the LLD with implementation-level detail appropriate for the plan.
-4. Add Mermaid diagrams when they improve clarity.
-5. Capture risks, constraints, and key assumptions.
+3. Include a Mermaid diagram in the HLD section.
+4. Write the LLD with implementation-level detail appropriate for the plan.
+5. Include a Mermaid diagram in the LLD section.
+6. Capture risks, constraints, and key assumptions.
 
 ## Output Standard
 
@@ -40,6 +52,7 @@ For architecture, provide:
 - Diagrams
 - Risks
 - Assumptions
+- enough detail to plug into the report template without adding BDD-only sections
 
 ## Guardrails
 

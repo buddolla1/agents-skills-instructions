@@ -1,7 +1,9 @@
 # [Feature Name]-design-bdd-breakdown
 
+[Generate this report from a feature brief such as `feature.txt` or equivalent requirement text.]
+
 ## Story Count
-[If the scope requires BDD stories, specify `storyCount` before generating. If it is not known yet, ask how many stories should be created. Repeat the story sections below until they match `storyCount`.]
+[Set `storyCount` to the number of stories to generate. If it is missing, ask how many stories should be created before continuing. Repeat the story block below until it matches `storyCount`.]
 
 ## Architecture Overview
 [Summarize the feature in 2-4 sentences. State the goal, user value, and where it fits in the current system.]
@@ -76,37 +78,26 @@ sequenceDiagram
 ## Epics
 1. `[Epic 1 title]`
 2. `[Epic 2 title]`
+3. `[Epic 3 title]`
+[Add one epic per story or feature slice as needed.]
 
-## User Stories (with Story Points)
-### Story 1
+## Story Block
+[Repeat this block for each story in `storyCount`.]
+
+### Story [n]
 As a `[persona]`, I want `[goal]` so that `[value]`.
 
 - Story Points: `[1/2/3/5/8/13/21]`
 - Notes: `[optional implementation notes]`
 
-### Story 2
-As a `[persona]`, I want `[goal]` so that `[value]`.
-
-- Story Points: `[1/2/3/5/8/13/21]`
-- Notes: `[optional implementation notes]`
-
-## Subtasks
-### Story 1 Subtasks
+### Story [n] Subtasks
 1. `[Subtask 1]`
 2. `[Subtask 2]`
 3. `[Subtask 3]`
 4. `[Subtask 4]`
 5. `[Subtask 5]`
 
-### Story 2 Subtasks
-1. `[Subtask 1]`
-2. `[Subtask 2]`
-3. `[Subtask 3]`
-4. `[Subtask 4]`
-5. `[Subtask 5]`
-
-## BDD Scenarios
-### Story 1
+### Story [n] BDD Scenarios
 ```gherkin
 Feature: [Feature name]
   Scenario: [scenario title]
@@ -125,24 +116,14 @@ Feature: [Feature name]
     Then [expected outcome]
 ```
 
-### Story 2
-```gherkin
-Feature: [Feature name]
-  Scenario: [scenario title]
-    Given [precondition]
-    When [action]
-    Then [expected outcome]
+### Story [n] Tasks
+- `[story-specific task 1]`
+- `[story-specific task 2]`
+- `[story-specific task 3]`
 
-  Scenario: [scenario title]
-    Given [precondition]
-    When [action]
-    Then [expected outcome]
-
-  Scenario: [scenario title]
-    Given [precondition]
-    When [action]
-    Then [expected outcome]
-```
+### Story [n] Dependencies
+- `[dependency 1]`
+- `[dependency 2]`
 
 ## Test Data
 ### Positive
@@ -161,14 +142,10 @@ Feature: [Feature name]
 - `[edge case 1]`
 - `[edge case 2]`
 
-## Tasks
+## Cross-Cutting Tasks
 - `[cross-cutting task 1]`
 - `[cross-cutting task 2]`
 - `[cross-cutting task 3]`
-
-## Dependencies
-- `[external system, team, or artifact 1]`
-- `[external system, team, or artifact 2]`
 
 ## Execution Plan
 1. `[step 1]`
@@ -191,8 +168,6 @@ Feature: [Feature name]
 ## Estimation Summary
 | Story | Points |
 |---|---:|
-| Story 1 | `[points]` |
-| Story 2 | `[points]` |
+| Story [n] | `[points]` |
+[Add one row per story in `storyCount`.]
 | Total | `[sum]` |
-
-[Repeat the story, subtasks, scenario, and estimation patterns above until they match `storyCount`.]

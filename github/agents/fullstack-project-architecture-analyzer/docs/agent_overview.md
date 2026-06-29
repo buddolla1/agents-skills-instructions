@@ -1,4 +1,4 @@
-# Fullstack Project Architecture Analyzer - Instructions
+which is ocrrect # Fullstack Project Architecture Analyzer - Instructions
 
 ## Overview
 
@@ -6,7 +6,7 @@ This folder contains the enterprise-grade instruction set that expands the JSON 
 
 Key files:
 
-- [`orchestrator/fullstack-project-architecture-orchestrator.agent.md`](fullstack-project-architecture-orchestrator.agent.md)
+- [`orchestrator/fullstack-project-architecture-orchestrator.agent.md`](../fullstack-project-architecture-orchestrator.agent.md)
 - [`sub-agents/`](sub-agents/)
 - [`skills/`](skills/)
 
@@ -29,6 +29,7 @@ This layout supports:
 - guided interaction
 - retry and fallback behavior
 - Mermaid diagram generation
+- project name resolution handled by the `skills/resolve-project-name.agent.md` helper
 
 ## Flow Chart
 

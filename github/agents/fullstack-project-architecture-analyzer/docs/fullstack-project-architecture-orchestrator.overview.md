@@ -21,20 +21,20 @@ flowchart TD
     C --> D[Repository Scanner and Chunker]
     D --> E[Dependency Mapping Sub-Agent]
     D --> F[Process Flow Extraction Sub-Agent]
-    D --> G[Diagram Generation Skill]
+    D --> G[Diagram Generation Sub-Agent]
     E --> H[Report Assembler]
     F --> H
     G --> H
     H --> I[Architecture Markdown Output]
 ```
 
-Main sub-agent or skill stages:
+Main sub-agent stages:
 - `Project Classifier`: identifies whether the repo is React, Spring Boot, or full-stack.
 - `Project Name Resolver`: derives the output name from repository evidence.
 - `Repository Scanner and Chunker`: maps modules, boundaries, and analyzable scope.
 - `Dependency Mapping Sub-Agent`: extracts dependency and component relationships.
 - `Process Flow Extraction Sub-Agent`: identifies request, data, and control flows.
-- `Diagram Generation Skill`: turns extracted structure and flows into Mermaid-ready diagrams.
+- `Diagram Generation Sub-Agent`: turns extracted structure and flows into Mermaid-ready diagrams.
 - `Report Assembler`: merges all outputs into the final architecture document.
 
 ## Inputs It Expects
@@ -53,7 +53,23 @@ Main sub-agent or skill stages:
 Specify whether you want full-repo or diff mode and whether the focus is overall architecture, APIs, UI, or data flow.
 
 ## Example Prompts
-- `Generate an architecture document for this full-stack repository.`
+- `Generate a full architecture document for this repository.`
+- `Generate architecture analysis in full-repo mode.`
+- `Generate architecture analysis in git-diff mode.`
+- `Generate the architecture for this React repository.`
+- `Generate the architecture for this Spring Boot repository.`
+- `Generate the architecture for this full-stack repository.`
+- `Generate the overall architecture for this repo with focus on architecture.`
+- `Generate the overall architecture for this repo with focus on APIs.`
+- `Generate the overall architecture for this repo with focus on UI.`
+- `Generate the overall architecture for this repo with focus on data flow.`
+- `Generate an HLD for this repository.`
+- `Generate an LLD for this repository.`
+- `Generate external API analysis for this repository.`
+- `Generate flowcharts for this repository.`
+- `Generate component analysis for this repository.`
+- `Generate the complete architecture markdown document.`
+- `Generate the architecture document with dependency mapping and Mermaid diagrams.`
 
 ## Limits And Guardrails
 - It should not invent components or dependencies.

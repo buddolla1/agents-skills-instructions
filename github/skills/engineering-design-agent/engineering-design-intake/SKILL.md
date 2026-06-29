@@ -14,6 +14,7 @@ Use this skill when the user provides a feature or design requirement and the re
 ## Prerequisites
 
 - `requirement`
+- Optional `storyCount`
 - Optional `outputMode`
 - Optional `projectType`
 - Optional `techStack`
@@ -23,12 +24,21 @@ Use this skill when the user provides a feature or design requirement and the re
 
 Confirm the requirement and ask the minimum clarifying question needed to proceed.
 
+## Template Ownership
+
+This skill resolves the inputs that control:
+
+- `Story Count`
+- `Architecture Overview` scope
+- `outputMode`
+
 ## Step-by-Step Workflows
 
 1. Read the requirement and requested artifact type.
 2. Determine whether `outputMode` is explicit or implied.
 3. If the requirement is too broad, ask one targeted clarifying question.
-4. If the inputs are sufficient, hand off to the repo-context skill.
+4. If BDD output is requested and `storyCount` is missing, ask how many stories should be created.
+5. If the inputs are sufficient, hand off to the repo-context skill.
 
 ## Output Standard
 
@@ -38,6 +48,7 @@ For intake, provide:
 - Missing context, if any
 - Clarifying question, if needed
 - Handoff note for the next skill
+- Requested `storyCount` when BDD output is missing the count
 
 ## Guardrails
 

@@ -1,7 +1,7 @@
 # Engineering Design Validation Skill Overview
 
 ## What This Skill Does
-This skill validates the generated markdown artifact and assembles the required final JSON response.
+This skill validates the generated markdown artifact and confirms the expected output contract.
 
 ## When To Use It
 - Use it after the markdown draft exists.
@@ -22,17 +22,14 @@ flowchart TD
     B --> C[Verify sections match outputMode]
     C --> D[Verify repo-aware claims against context]
     D --> E[Verify assumptions are explicit]
-    E --> F[Assemble final JSON object]
+    E --> F[Confirm markdown output contract]
 ```
 
 ## Outputs It Produces
-- `summary`
-- `artifactType`
 - `sectionsGenerated`
 - `outputPath`
 - `assumptions`
 
 ## Guardrails
-- Do not emit prose outside the final JSON object.
+- Do not emit prose outside the markdown artifact contract.
 - Do not claim repo alignment without evidence.
-
