@@ -1,10 +1,21 @@
 # [Feature Name]-design-bdd-breakdown
 
+## Story Count
+[If the scope requires BDD stories, specify `storyCount` before generating. If it is not known yet, ask how many stories should be created. Repeat the story sections below until they match `storyCount`.]
+
 ## Architecture Overview
 [Summarize the feature in 2-4 sentences. State the goal, user value, and where it fits in the current system.]
 
 ## High-Level Design (HLD)
 [Describe the overall solution, major components, and how they interact at a high level.]
+
+```mermaid
+flowchart LR
+  A[User] --> B[UI]
+  B --> C[Controller]
+  C --> D[Service]
+  D --> E[Data Store]
+```
 
 ## Low-Level Design (LLD)
 ### Components
@@ -18,6 +29,23 @@
 - `[field_1]`
 - `[field_2]`
 - `[field_3]`
+
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant UI as UI
+  participant C as Controller
+  participant S as Service
+  participant D as Data Store
+
+  U->>UI: interact
+  UI->>C: request
+  C->>S: process()
+  S->>D: read/write
+  D-->>S: result
+  S-->>C: response
+  C-->>UI: render data
+```
 
 ## Architecture Diagrams
 ```mermaid
@@ -67,11 +95,15 @@ As a `[persona]`, I want `[goal]` so that `[value]`.
 1. `[Subtask 1]`
 2. `[Subtask 2]`
 3. `[Subtask 3]`
+4. `[Subtask 4]`
+5. `[Subtask 5]`
 
 ### Story 2 Subtasks
 1. `[Subtask 1]`
 2. `[Subtask 2]`
 3. `[Subtask 3]`
+4. `[Subtask 4]`
+5. `[Subtask 5]`
 
 ## BDD Scenarios
 ### Story 1
@@ -162,3 +194,5 @@ Feature: [Feature name]
 | Story 1 | `[points]` |
 | Story 2 | `[points]` |
 | Total | `[sum]` |
+
+[Repeat the story, subtasks, scenario, and estimation patterns above until they match `storyCount`.]
