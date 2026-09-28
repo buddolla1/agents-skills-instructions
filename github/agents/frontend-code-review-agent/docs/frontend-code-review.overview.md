@@ -1,64 +1,66 @@
 # Frontend Code Review Agent Overview
 
 ## What This Agent Does
-This agent reviews frontend code changes for evidence-backed issues across correctness, security, accessibility, reliability, performance, maintainability, standards, and tests.
+This agent reviews React, JavaScript, and TypeScript implementation changes for evidence-backed issues in correctness, security, reliability, performance, dead code, maintainability, and dependency risk.
 
-It is designed for React, JavaScript, TypeScript, HTML, and CSS review work where findings need file and line references, practical fixes, and clear severity.
+It is designed for regular pull request review where findings need file and line references, practical fixes, proportional severity, and clear separation between confirmed issues and items that need runtime verification.
 
 ## When To Use It
-- Use it for frontend pull request reviews.
-- Use it for changed React components, hooks, pages, styles, or tests.
-- Use it when accessibility, security, performance, and test coverage should be reviewed together.
-- Use it when you need a concise report that separates confirmed findings from items that need runtime verification.
+- Use it for changed React components, hooks, pages, utilities, API integration code, or TypeScript implementation files.
+- Use it when reviewing React logic, JavaScript or TypeScript behavior, state flow, async behavior, API handling, security, performance, or maintainability.
+- Use it when static review can identify implementation risks before lint, typecheck, build, test, or runtime validation.
 
 ## When Not To Use It
-- Do not use it for broad visual design critique without code-level evidence.
-- Do not use it to claim browser, device, screen-reader, or runtime behavior was verified unless those checks were actually run.
+- Do not use it for HTML semantics, W3C validity, ARIA, WCAG, keyboard navigation, CSS, responsive layout, browser rendering behavior, SEO metadata, or UI/component testing gaps.
+- Do not use it to claim runtime, test, build, browser, or accessibility behavior was verified unless those checks were actually run.
 - Do not use it to generate findings for every category when the code does not support them.
 - Do not use it for unrelated legacy code review unless the submitted change introduces or worsens the issue.
 
 ## How It Works
-The agent inspects the supplied frontend scope, reads directly related code and project configuration when needed, checks high-impact frontend risk areas, removes duplicate or low-confidence findings, and returns a severity-ordered markdown review.
+The agent starts with the changed files, filters for implementation-review relevance, reviews changed lines and directly affected code, reads only the related file, symbol, type, hook, API wrapper, test, or configuration needed to validate a finding, and returns a severity-ordered markdown review.
 
 ```mermaid
 flowchart TD
-    A[Receive frontend files or diff] --> B[Understand change purpose]
-    B --> C[Inspect related code and config]
-    C --> D[Review correctness, security, accessibility, reliability, performance, CSS, and tests]
-    D --> E[Remove duplicates and low-confidence items]
-    E --> F[Produce severity-ordered review]
-    F --> G[Recommend supported validation commands]
+    A[Receive changed frontend files or diff] --> B[Check relevance to implementation review]
+    B --> C[Review changed lines and affected logic]
+    C --> D{Need more context?}
+    D -- No --> E[Continue review]
+    D -- Yes --> F[Read directly related file or symbol]
+    F --> E
+    E --> G[Merge duplicates and move uncertain items to Needs Verification]
+    G --> H[Produce severity-ordered review]
 ```
 
 ## Inputs It Expects
 - frontend source files, changed files, or pull request diff
-- optional repository scope such as component, page, package, or repo
+- optional repository scope such as changed files, component, page, or package
 - optional framework context such as React, Next.js, Vue, Angular, or vanilla JavaScript
-- optional focus areas such as accessibility, security, React, TypeScript, performance, CSS, responsive behavior, testing, or SEO
-- optional project validation commands for linting, type checking, testing, accessibility checks, or builds
+- optional focus areas such as React, TypeScript, security, performance, error handling, dependencies, or maintainability
+- optional project validation commands for linting, type checking, testing, or builds
 
 ## Outputs It Produces
-- markdown report beginning with `# Frontend Code Review`
-- summary of files reviewed and main risk areas
-- severity-ordered findings with category, file, line, issue, impact, suggested fix, and confidence
+- markdown review with confirmed findings in the required finding format
+- severity, category, file, line or line range, issue, impact, suggested fix, and confidence for every confirmed finding
 - `Needs Verification` section for important risks that static review cannot prove
-- final severity count table
-- recommended validation commands supported by the repository
+- final `Review Summary` severity count table
+- explicit no-issues statement when no actionable issues are identified
 
 ## Tools It Uses
-- `codebase`: reads source files, nearby usage, tests, and configuration
+- `codebase`: reads changed files, nearby implementation usage, types, hooks, API wrappers, tests, and configuration when needed
 
 ## How To Prompt It
-Provide the files, diff, component, page, or repository scope you want reviewed. Mention any specific concerns, such as accessibility, async error handling, performance, responsive CSS, or tests.
+Provide the implementation files, diff, component, page, or PR scope you want reviewed. Mention any specific concerns, such as hooks, stale closures, async error handling, state bugs, security, duplicate API calls, render performance, dead code, dependency misuse, or maintainability.
 
 ## Example Prompts
-- `@frontend-code-review review the changed React files in this pull request for correctness, accessibility, security, and test gaps`
-- `@frontend-code-review inspect this component and report only evidence-backed issues with file and line references`
-- `@frontend-code-review review these TypeScript UI changes and focus on async error handling, state bugs, and accessibility`
-- `@frontend-code-review check this Next.js page for semantic HTML, metadata, responsive layout, and performance risks`
-- `@frontend-code-review review the frontend diff and recommend validation commands supported by this repository`
+- `@frontend-code-review review the changed React files for correctness, security, and error handling`
+- `@frontend-code-review inspect this hook for stale closures, effect dependencies, cleanup, and race conditions`
+- `@frontend-code-review review these TypeScript changes for null handling, unsafe casts, and promise failures`
+- `@frontend-code-review check this component for unnecessary re-renders, expensive render work, and justified memoization`
+- `@frontend-code-review review this frontend diff for dead code, dependency misuse, and maintainability risks`
 
 ## Limits And Guardrails
+- It should review changed files first and avoid whole-repository scans unless absolutely necessary.
+- It should read surrounding files only when required to validate a finding.
 - It should ground every confirmed finding in visible code evidence.
 - It should avoid preference-only feedback and broad rewrites when a focused fix is enough.
 - It should not claim validation commands passed unless they were actually executed successfully.
