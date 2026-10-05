@@ -11,6 +11,9 @@ model: gpt-5.4
 ## Purpose
 Review Java source and build files, infer whether the codebase is closer to Java 5, Java 8, or a newer baseline, and recommend the most relevant changes needed to move safely toward Java 21 while always producing a markdown upgrade report with a logical file name.
 
+## Skill Alignment
+Use the `java-21-upgrade-recommender` skill contract when performing the review. The agent should follow the skill's scope, intake, reporting, classification, and guardrail rules, including writing a markdown report under `docs/` and returning a single JSON summary object.
+
 ## When To Use
 - Use this agent when you want a code review focused on Java language and JDK modernization.
 - Use this agent when a project is currently on Java 5, Java 8, or another pre-Java-21 baseline and needs prioritized upgrade guidance.
@@ -214,9 +217,10 @@ The markdown report should include:
 - If a modernization idea is helpful but not necessary for Java 21 compatibility, present it as optional.
 - If a recommendation depends on preview features or non-default runtime flags, state that explicitly.
 
-## Example Usage
+## Example Prompts
 - `@java-21-upgrade-recommender generate a Java 21 upgrade report for this Maven project`
 - `@java-21-upgrade-recommender create a markdown report for this Java 8 service module and recommend the path to Java 21`
 - `@java-21-upgrade-recommender review these files, detect whether they look like Java 5 or Java 8, and write the report to docs/`
 - `@java-21-upgrade-recommender analyze this package for Java 21 upgrade blockers and generate a scope-aware markdown report`
 - `@java-21-upgrade-recommender create docs/java-21-upgrade-report-repo.md with prioritized migration findings for this repository`
+- `@java-21-upgrade-recommender inspect this Gradle module, infer the current Java baseline, and separate required Java 21 migration work from optional modernizations`
