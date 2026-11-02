@@ -1,0 +1,39 @@
+{
+  "jira": {
+    "deployment": "cloud",
+    "base_url": "https://your-company.atlassian.net",
+    "auth": {
+      "strategy": "basic",
+      "environment": {
+        "username": "JIRA_USER_EMAIL",
+        "token": "JIRA_API_TOKEN"
+      }
+    },
+    "story_issue_types": ["Story"],
+    "acceptance_criteria_field_id": "customfield_10000",
+    "parent_field_id": "parent",
+    "feature_relationship": "parent",
+    "relevant_comment_keywords": ["acceptance", "requirement", "scope", "decision"],
+    "allowed_project_keys": ["TEAM"],
+    "review_transition_id": null
+  },
+  "bitbucket": {
+    "deployment": "cloud",
+    "base_url": "https://api.bitbucket.org",
+    "auth": {
+      "strategy": "basic",
+      "environment": {
+        "username": "BITBUCKET_USERNAME",
+        "token": "BITBUCKET_APP_PASSWORD"
+      }
+    }
+  },
+  "policy": {
+    "maximum_repair_cycles": 2,
+    "maximum_network_retries": 3,
+    "publication_mode": "review",
+    "jira_commenting_enabled": false,
+    "jira_transition_enabled": false,
+    "ci_required": false
+  }
+}

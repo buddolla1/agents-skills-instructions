@@ -1,0 +1,57 @@
+{
+  "catalog_version": "1",
+  "services": [
+    {
+      "id": "orders",
+      "local_path": "/absolute/path/to/orders",
+      "repository": {
+        "deployment": "cloud",
+        "workspace": "your-workspace",
+        "slug": "orders"
+      },
+      "allowed_remote": "origin",
+      "base_branch": "main",
+      "protected_branches": ["main"],
+      "worktree_root": "/absolute/path/to/story-worktrees",
+      "branch_prefix": "story",
+      "contract_locations": ["openapi/", "schemas/"],
+      "known_upstream_dependencies": [],
+      "known_downstream_dependencies": ["payments"],
+      "checks": [
+        {
+          "name": "tests",
+          "command": ["./gradlew", "test"],
+          "working_directory": ".",
+          "timeout_seconds": 900,
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "payments",
+      "local_path": "/absolute/path/to/payments",
+      "repository": {
+        "deployment": "data_center",
+        "project_key": "PAY",
+        "slug": "payments"
+      },
+      "allowed_remote": "origin",
+      "base_branch": "develop",
+      "protected_branches": ["develop"],
+      "worktree_root": "/absolute/path/to/story-worktrees",
+      "branch_prefix": "story",
+      "contract_locations": ["src/main/resources/asyncapi.yaml"],
+      "known_upstream_dependencies": ["orders"],
+      "known_downstream_dependencies": [],
+      "checks": [
+        {
+          "name": "tests",
+          "command": ["mvnw", "test"],
+          "working_directory": ".",
+          "timeout_seconds": 900,
+          "required": true
+        }
+      ]
+    }
+  ]
+}

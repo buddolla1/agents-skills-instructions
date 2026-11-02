@@ -1,0 +1,17 @@
+{
+  "summary": "Fixture-only one-service change",
+  "services": {
+    "orders": {
+      "classification": "CHANGE_REQUIRED",
+      "acceptance_criteria": ["AC-1", "AC-2"],
+      "reviewed_paths": ["status.txt"],
+      "evidence": [{"path": "README.md", "revision": "fixture-base"}]
+    }
+  },
+  "dependency_edges": [],
+  "contract_checks": [],
+  "coding_order": ["orders"],
+  "merge_order": ["orders"],
+  "deployment_order": ["orders"],
+  "compatibility_strategy": "additive field"
+}
