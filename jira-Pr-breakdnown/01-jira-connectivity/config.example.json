@@ -1,0 +1,13 @@
+{
+  "deployment": "cloud",
+  "base_url": "https://your-company.atlassian.net",
+  "auth": {
+    "strategy": "basic",
+    "username_env": "JIRA_USER_EMAIL",
+    "token_env": "JIRA_API_TOKEN"
+  },
+  "allowed_project_keys": ["TEAM"],
+  "timeout_seconds": 30,
+  "maximum_retries": 3,
+  "maximum_response_bytes": 5000000
+}

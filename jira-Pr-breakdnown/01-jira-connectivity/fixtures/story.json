@@ -1,0 +1,13 @@
+{
+  "issues": {
+    "TEAM-123": {
+      "key": "TEAM-123",
+      "fields": {
+        "summary": "Fixture Jira connectivity story",
+        "issuetype": { "name": "Story" },
+        "status": { "name": "To Do" },
+        "updated": "2026-11-01T12:00:00.000+0000"
+      }
+    }
+  }
+}

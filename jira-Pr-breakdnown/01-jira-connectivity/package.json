@@ -1,0 +1,14 @@
+{
+  "name": "jira-connectivity-step",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "doctor": "node jira-cli.mjs doctor",
+    "test-connection": "node jira-cli.mjs test-connection",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

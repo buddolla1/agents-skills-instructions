@@ -1,0 +1,52 @@
+# Local testing: keep the existing Fluent Bit and OpenObserve stack running.
+# Retains the mysql-log-test project and mysql-data volume from the earlier file.
+# General query log records SQL text; use test data and disable after testing.
+# The helper replays the file on restart (duplicates possible); no rotation configured.
+# Start/update: docker compose -f docker-compose.mysql.yml up -d
+# Disable query logging persistently: set --general-log=OFF, then run up -d again.
+name: mysql-log-test
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: mysql-log-test
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD in .env}
+      MYSQL_DATABASE: log_test
+    ports:
+    - 127.0.0.1:3307:3306
+    volumes:
+    - mysql-data:/var/lib/mysql
+    - mysql-query-logs:/var/log/mysql
+    command:
+    - --general-log=ON
+    - --log-output=FILE
+    - --general-log-file=/var/log/mysql/general.log
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: 127.0.0.1:24224
+        fluentd-async: 'true'
+        tag: docker.{{.Name}}
+  mysql-query-log-forwarder:
+    image: alpine:3.22
+    container_name: mysql-query-log-forwarder
+    restart: unless-stopped
+    depends_on:
+    - mysql
+    volumes:
+    - mysql-query-logs:/mysql-logs:ro
+    command:
+    - /bin/sh
+    - -c
+    - while [ ! -f /mysql-logs/general.log ]; do sleep 1; done; exec tail -n +1 -F
+      /mysql-logs/general.log
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: 127.0.0.1:24224
+        fluentd-async: 'true'
+        tag: docker.{{.Name}}
+volumes:
+  mysql-data: null
+  mysql-query-logs: null

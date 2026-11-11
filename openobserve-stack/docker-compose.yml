@@ -1,0 +1,56 @@
+services:
+  openobserve:
+    image: public.ecr.aws/zinclabs/openobserve:latest
+    restart: unless-stopped
+    ports:
+    - 127.0.0.1:5080:5080
+    environment:
+      ZO_DATA_DIR: /data
+      ZO_ROOT_USER_EMAIL: ${ZO_ROOT_USER_EMAIL:?Set email in .env}
+      ZO_ROOT_USER_PASSWORD: ${ZO_ROOT_USER_PASSWORD:?Set password in .env}
+    volumes:
+    - openobserve-data:/data
+    logging:
+      driver: local
+      options:
+        max-size: 10m
+        max-file: '3'
+  fluent-bit:
+    image: cr.fluentbit.io/fluent/fluent-bit:latest
+    restart: unless-stopped
+    depends_on:
+    - openobserve
+    environment:
+      ZO_ROOT_USER_EMAIL: ${ZO_ROOT_USER_EMAIL:?Set email in .env}
+      ZO_ROOT_USER_PASSWORD: ${ZO_ROOT_USER_PASSWORD:?Set password in .env}
+    volumes:
+    - ./fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:ro
+    - fluent-bit-state:/fluent-bit/state
+    ports:
+    - 127.0.0.1:24224:24224
+    logging:
+      driver: local
+      options:
+        max-size: 10m
+        max-file: '3'
+  test-app:
+    image: alpine:3.22
+    restart: unless-stopped
+    depends_on:
+    - fluent-bit
+    command:
+    - /bin/sh
+    - -c
+    - i=0; while true; do i=$$((i+1)); echo "$$(date -u +%Y-%m-%dT%H:%M:%SZ) INFO
+      container log test sequence=$$i"; if [ $$((i % 5)) -eq 0 ]; then echo "$$(date
+      -u +%Y-%m-%dT%H:%M:%SZ) ERROR simulated test failure sequence=$$i" >&2; fi;
+      sleep 5; done
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: 127.0.0.1:24224
+        fluentd-async: 'true'
+        tag: docker.{{.Name}}
+volumes:
+  openobserve-data: null
+  fluent-bit-state: null
