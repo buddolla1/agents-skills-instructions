@@ -54,3 +54,6 @@ services:
 volumes:
   openobserve-data: null
   fluent-bit-state: null
+
+
+#docker compose -f docker-compose.yml up -d --no-deps --force-recreate fluent-bit
