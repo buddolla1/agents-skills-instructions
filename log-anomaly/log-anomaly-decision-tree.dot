@@ -1,0 +1,25 @@
+digraph Tree {
+node [shape=box, style="filled, rounded", color="black", fontname="helvetica"] ;
+edge [fontname="helvetica"] ;
+0 [label=<total_logs &le; 97.5<br/>gini = 0.041<br/>samples = 238<br/>value = [233, 5]<br/>class = Normal>, fillcolor="#e6843d"] ;
+1 [label=<total_logs &le; 61.5<br/>gini = 0.018<br/>samples = 226<br/>value = [224, 2]<br/>class = Normal>, fillcolor="#e5823b"] ;
+0 -> 1 [labeldistance=2.5, labelangle=45, headlabel="True"] ;
+2 [label=<db_failures &le; 1.5<br/>gini = 0.32<br/>samples = 10<br/>value = [8, 2]<br/>class = Normal>, fillcolor="#eca06a"] ;
+1 -> 2 ;
+3 [label=<gini = 0.0<br/>samples = 5<br/>value = [5, 0]<br/>class = Normal>, fillcolor="#e58139"] ;
+2 -> 3 ;
+4 [label=<gini = 0.48<br/>samples = 5<br/>value = [3, 2]<br/>class = Normal>, fillcolor="#f6d5bd"] ;
+2 -> 4 ;
+5 [label=<gini = 0.0<br/>samples = 216<br/>value = [216, 0]<br/>class = Normal>, fillcolor="#e58139"] ;
+1 -> 5 ;
+6 [label=<errors &le; 2.5<br/>gini = 0.375<br/>samples = 12<br/>value = [9, 3]<br/>class = Normal>, fillcolor="#eeab7b"] ;
+0 -> 6 [labeldistance=2.5, labelangle=-45, headlabel="False"] ;
+7 [label=<gini = 0.5<br/>samples = 4<br/>value = [2, 2]<br/>class = Normal>, fillcolor="#ffffff"] ;
+6 -> 7 ;
+8 [label=<total_logs &le; 99.5<br/>gini = 0.219<br/>samples = 8<br/>value = [7, 1]<br/>class = Normal>, fillcolor="#e99355"] ;
+6 -> 8 ;
+9 [label=<gini = 0.0<br/>samples = 3<br/>value = [3, 0]<br/>class = Normal>, fillcolor="#e58139"] ;
+8 -> 9 ;
+10 [label=<gini = 0.32<br/>samples = 5<br/>value = [4, 1]<br/>class = Normal>, fillcolor="#eca06a"] ;
+8 -> 10 ;
+}
